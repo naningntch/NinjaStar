@@ -14,8 +14,8 @@ Player::Player(Texture* texture, Texture* bulletTexture, Vector2u imageCount, fl
 
 	this->texture = texture;
 	this->sprite.setTexture(*this->texture);
-	this->sprite.setScale(0.5f, 0.5f);
-	this->sprite.setPosition(Vector2f(0.f, 550.f));
+	this->sprite.setScale(0.59f, 0.59f);
+	this->sprite.setPosition(Vector2f(0.f, 525.f));
 	this->bulletTexture = bulletTexture;
 	this->shootTimerMax = 25;
 	this->shootTimer = this->shootTimerMax;
@@ -42,9 +42,9 @@ void Player::Movement(float deltaTime)
 	{
 		accelerationValue -= gravityAcceleration * deltaTime;
 		this->sprite.move(0, -accelerationValue);
-		if (this->sprite.getPosition().y > 550)
+		if (this->sprite.getPosition().y > 525)
 		{
-			this->sprite.setPosition(this->sprite.getPosition().x, 550);
+			this->sprite.setPosition(this->sprite.getPosition().x, 525);
 			this->jump = false;
 			accelerationValue = 0;
 		}
@@ -52,12 +52,12 @@ void Player::Movement(float deltaTime)
 
 }
 
-void Player::Combat(RenderTarget& target)
+void Player::Combat(RenderWindow& target)
 {
 	if (Mouse::isButtonPressed(Mouse::Left) && this->shootTimer >= this->shootTimerMax)
 	{
-		this->PlayerPos = Vector2f(this->sprite.getPosition().x + this->sprite.getGlobalBounds().width, this->sprite.getPosition().y + this->sprite.getGlobalBounds().height / 2);
-		this->MousePos = Vector2f(Mouse::getPosition());
+		this->PlayerPos = this->sprite.getPosition();
+		this->MousePos = Vector2f(Mouse::getPosition(target));
 		this->aimDir = MousePos - PlayerPos;
 		this->aimDirNorm = aimDir / sqrt((aimDir.x * aimDir.x + aimDir.y * aimDir.y));
 		this->bullets.push_back(Bullet(bulletTexture, this->sprite.getPosition(), aimDirNorm, Vector2f(20.0f, 20.0f)));
@@ -65,7 +65,6 @@ void Player::Combat(RenderTarget& target)
 
 	}
 }
-
 
 void Player::Update(float deltaTime)
 {
@@ -87,11 +86,13 @@ void Player::Update(float deltaTime)
 	if (this->shootTimer < this->shootTimerMax)
 	{
 		this->shootTimer++;
+		cout << "shoot" << shootTimer << endl;
+
 	}
 	Movement(deltaTime);
 }
 
-void Player::Draw(RenderTarget& target)
+void Player::Draw(RenderWindow& target)
 {
 	target.draw(this->sprite);
 	for (size_t i = 0; i < this->bullets.size(); i++)

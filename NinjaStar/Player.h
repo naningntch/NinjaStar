@@ -25,9 +25,9 @@ private:
 public:
 	Player(Texture* texture,Texture *bulletTexture, Vector2u imageCount, float switchTime);
 	void Movement(float deltaTime);
-	void Combat(RenderTarget& target);
+	void Combat(RenderWindow& target);
 	void Update(float deltaTime);
-	void Draw(RenderTarget& target);
+	void Draw(RenderWindow& target);
 
 	inline const int getShootTimerMax()const { return this->shootTimerMax; }
 	inline const Vector2f& getPosition()const { return this->sprite.getPosition(); }

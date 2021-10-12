@@ -14,6 +14,7 @@ int main()
 		{
 			deltaTime = 1.0f / 60.0f;
 		}
+
 		Event event;
 		while (window.pollEvent(event))
 		{

@@ -37,12 +37,10 @@ void Game::Update(float deltaTime)
 		if (spawnTimer >= spawnTimerMax)
 		{
 			Vector2f randPos = Vector2f(0, 0);
-			cout << "x" << endl;
-
+			
 			if (player.at(0).getPosition().x <= window->getSize().x / 2)
 				randPos = Vector2f(window->getSize().x, 0);
-			cout << "y" << endl;
-
+			
 			Vector2f dir = { player.at(0).getPosition().x - window->getSize().x, player.at(0).getPosition().y };
 			enemies.push_back(Enemy(&this->enemyTexture, dir, 0.2f, randPos, 1, 5, 1, 3));
 			spawnTimer = 0;
@@ -84,25 +82,26 @@ void Game::Update(float deltaTime)
 		}
 		for (size_t i = 0; i < enemies.size(); i++)
 		{
-			enemies[i].Update(deltaTime);
-			if (enemies[i].getPosition().x <= 0)
-			{
-				enemies.erase(enemies.begin() + i);
-				break;
-			}
+			enemies.at(i).Update(deltaTime);
+			
 			for (size_t j = 0; j < player.size(); j++)
 			{
-				if (this->enemies[i].getGlobalBounds().intersects(this->player[i].getGlobalBounds()))
+				if (this->enemies.at(i).getGlobalBounds().intersects(this->player.at(j).getGlobalBounds()))
 				{
-					int damage = enemies[i].getDamage();
-					player[i].takeDamage(damage);
-					if (player[i].getHp() <= 0)
+					int damage = enemies.at(i).getDamage();
+					player.at(i).takeDamage(damage);
+					if (player.at(i).getHp() <= 0)
 					{
 						this->playerAlive = false;
 					}
 					enemies.erase(enemies.begin() + i);
 					break;
 				}
+			}
+			if (enemies.at(i).getPosition().x <= 0)
+			{
+				enemies.erase(enemies.begin() + i);
+				break;
 			}
 
 		}
@@ -122,7 +121,7 @@ void Game::Draw()
 	}
 	for (int i = 0; i < this->player.size(); i++)
 	{
-		player[i].Draw(*this->window);
+		player.at(i).Draw(*this->window);
 	}
 	this->window->display();
 

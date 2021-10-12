@@ -17,6 +17,7 @@ private:
 	Texture enemyTexture;
 	float spawnTimerMax;
 	float spawnTimer;
+	bool playerAlive = true;
 
 public:
 	Game(RenderWindow *window);

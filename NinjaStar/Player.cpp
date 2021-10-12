@@ -17,9 +17,18 @@ Player::Player(Texture* texture, Texture* bulletTexture, Vector2u imageCount, fl
 	this->sprite.setScale(0.59f, 0.59f);
 	this->sprite.setPosition(Vector2f(0.f, 525.f));
 	this->bulletTexture = bulletTexture;
-	this->shootTimerMax = 25;
+	this->shootTimerMax = 50;
 	this->shootTimer = this->shootTimerMax;
+	this->hpMax = 10;
+	this->hp = hpMax;
+	this->damageMax = 2;
+	this->damage = rand() % damageMax + 1;
 
+}
+
+void Player::takeDamage(int damage)
+{
+	this->hp -= damage;
 }
 
 void Player::Movement(float deltaTime)
@@ -86,7 +95,6 @@ void Player::Update(float deltaTime)
 	if (this->shootTimer < this->shootTimerMax)
 	{
 		this->shootTimer++;
-		cout << "shoot" << shootTimer << endl;
 
 	}
 	Movement(deltaTime);

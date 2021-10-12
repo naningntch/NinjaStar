@@ -36,15 +36,15 @@ public:
 	
 	void takeDamage(int damage);
 
-	float vectorLength(Vector2f v)
+	/*float vectorLength(Vector2f v)
 	{
 		return sqrt(pow(v.x, 2) + pow(v.y, 2));
 	}
 	Vector2f normalize(Vector2f v, float length)
 	{
 		return v / length;
-	}
-	inline const Vector2f& getPosition()const { return this->sprite.getPosition(); }
-	inline const FloatRect& getGlobalBounds()const { return this->sprite.getGlobalBounds(); }
+	}*/
+	inline const Vector2f getPosition()const { return this->sprite.getPosition(); }
+	inline const FloatRect getGlobalBounds()const { return this->sprite.getGlobalBounds(); }
 };
 

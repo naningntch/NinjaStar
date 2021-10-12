@@ -21,9 +21,14 @@ private:
 	Vector2f PlayerPos;
 	int shootTimer;
 	int shootTimerMax;
+	int hp;
+	int hpMax;
+	int damage;
+	int damageMax;
 
 public:
 	Player(Texture* texture,Texture *bulletTexture, Vector2u imageCount, float switchTime);
+	void takeDamage(int damage);
 	void Movement(float deltaTime);
 	void Combat(RenderWindow& target);
 	void Update(float deltaTime);
@@ -33,6 +38,9 @@ public:
 	inline const Vector2f& getPosition()const { return this->sprite.getPosition(); }
 	inline const FloatRect& getGlobalBounds()const { return this->sprite.getGlobalBounds(); }
 	inline vector<Bullet>& getBullets() { return this->bullets; }
+
+	inline int getHp() { return this->hp; }
+	inline int getDamage() { return this->damage; }
 
 public:
 	IntRect uvRect;

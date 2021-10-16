@@ -1,18 +1,14 @@
 #include "Enemy.h"
 
-Enemy::Enemy(Texture* texture, Vector2f dir, float speed, Vector2f position, int hp, int hpMax, int damage, int damageMax)
+Enemy::Enemy(Texture* texture, Vector2f playerPos, float speed, Vector2f position, int hp, int hpMax, int damage, int damageMax)
 {
 	this->texture = texture;
-	this->dir = dir;
+	this->playerPos = playerPos;
 	this->speed = speed;
 	this->sprite.setTexture(*this->texture);
 	this->position = position;
 	this->sprite.setPosition(this->position);
 	this->sprite.setScale(0.25, 0.25);
-	if (this->position.x == 1366)
-		this->sprite.rotate(45.f);
-	else
-		this->sprite.rotate(-45.f);
 
 	this->hp = hp;
 	this->hpMax = hpMax;
@@ -23,13 +19,9 @@ Enemy::Enemy(Texture* texture, Vector2f dir, float speed, Vector2f position, int
 
 void Enemy::Update(float deltaTime)
 {
-	/*float a = vectorLength(this->dir);
-	Vector2f b = normalize(this->dir, a);*/
-	if (this->position.x == 1366)
-		this->sprite.move(dir.x * speed * deltaTime, dir.y * speed * deltaTime);
-	else
-		this->sprite.move(-dir.x * speed * deltaTime, dir.y * speed * deltaTime);
-
+	this->radians = atan2(playerPos.y + 50.f - position.y, playerPos.x - position.x);
+	sprite.move(deltaTime * speed * cos(this->radians), deltaTime * speed * sin(radians));
+	sprite.setRotation((radians * 180 / M_PI) - 100);
 }
 
 void Enemy::Draw(RenderTarget& target)

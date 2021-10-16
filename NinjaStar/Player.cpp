@@ -17,18 +17,20 @@ Player::Player(Texture* texture, Texture* bulletTexture, Vector2u imageCount, fl
 	this->sprite.setScale(0.59f, 0.59f);
 	this->sprite.setPosition(Vector2f(0.f, 525.f));
 	this->bulletTexture = bulletTexture;
-	this->shootTimerMax = 50;
+	this->shootTimerMax = 35;
 	this->shootTimer = this->shootTimerMax;
-	this->hpMax = 10;
+	this->hpMax = 20;
 	this->hp = hpMax;
 	this->damageMax = 2;
 	this->damage = rand() % damageMax + 1;
-
+	this->damageTimerMax = 10;
+	this->damageTimer = damageTimerMax;
 }
 
 void Player::takeDamage(int damage)
 {
 	this->hp -= damage;
+	damageTimer = 0;
 }
 
 void Player::Movement(float deltaTime)
@@ -58,7 +60,6 @@ void Player::Movement(float deltaTime)
 			accelerationValue = 0;
 		}
 	}
-
 }
 
 void Player::Combat(RenderWindow& target)
@@ -69,9 +70,24 @@ void Player::Combat(RenderWindow& target)
 		this->MousePos = Vector2f(Mouse::getPosition(target));
 		this->aimDir = MousePos - PlayerPos;
 		this->aimDirNorm = aimDir / sqrt((aimDir.x * aimDir.x + aimDir.y * aimDir.y));
-		this->bullets.push_back(Bullet(bulletTexture, this->sprite.getPosition(), aimDirNorm, Vector2f(20.0f, 20.0f)));
+		this->bullets.push_back(Bullet(bulletTexture, this->sprite.getPosition(), aimDirNorm, Vector2f(10.0f, 10.0f)));
 		this->shootTimer = 0;
 
+	}
+	if (damageTimer < damageTimerMax)
+	{
+		if (damageTimer % 2 == 0)
+		{
+			sprite.setColor(Color::Red);
+		}
+		else
+		{
+			sprite.setColor(Color::White);
+		}
+	}
+	else
+	{
+		sprite.setColor(Color::White);
 	}
 }
 
@@ -97,6 +113,12 @@ void Player::Update(float deltaTime)
 		this->shootTimer++;
 
 	}
+	if (this->damageTimer < this->damageTimerMax)
+	{
+		this->damageTimer++;
+
+	}
+
 	Movement(deltaTime);
 }
 

@@ -1,8 +1,9 @@
 #include "Game.h"
+
 int main()
 {
 	RenderWindow window(VideoMode(1366, 768), "NinjaStar", Style::Fullscreen | Style::Close);
-	Game game(&window);
+		Game game(&window);
 
 	float deltaTime = 0.0f;
 	Clock clock;

@@ -15,7 +15,7 @@ Bullet::Bullet(Texture* texture, Vector2f position, Vector2f dir, Vector2f maxVe
 void Bullet::Movement()
 {
 	this->sprite.move(this->maxVelocity.x * dir.x, this->maxVelocity.y * dir.y);
-	this->sprite.rotate(this->maxVelocity.x * 20.f);
+	this->sprite.rotate(this->maxVelocity.x * 10.f);
 
 }
 

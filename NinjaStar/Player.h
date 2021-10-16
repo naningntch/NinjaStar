@@ -25,6 +25,8 @@ private:
 	int hpMax;
 	int damage;
 	int damageMax;
+	int damageTimerMax;
+	int damageTimer;
 
 public:
 	Player(Texture* texture,Texture *bulletTexture, Vector2u imageCount, float switchTime);
@@ -40,15 +42,18 @@ public:
 	inline vector<Bullet>& getBullets() { return this->bullets; }
 
 	inline int getHp() { return this->hp; }
+	inline int getHpMax() { return this->hpMax; }
 	inline int getDamage() { return this->damage; }
+	
 
 public:
 	IntRect uvRect;
 	float jumpF = 400;
 	float gravityAcceleration = 9.8;
 
-	float mass = 45;
+	float mass = 50;
 	float speedValue = 0;
 	float accelerationValue = 0;
+
 };
 

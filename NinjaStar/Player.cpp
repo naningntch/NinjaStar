@@ -19,12 +19,16 @@ Player::Player(Texture* texture, Texture* bulletTexture, Vector2u imageCount, fl
 	this->bulletTexture = bulletTexture;
 	this->shootTimerMax = 35;
 	this->shootTimer = this->shootTimerMax;
+	this->healTimerMax = 35;
+	this->healTimer = this->healTimerMax;
 	this->hpMax = 20;
 	this->hp = hpMax;
 	this->damageMax = 2;
 	this->damage = rand() % damageMax + 1;
 	this->damageTimerMax = 10;
 	this->damageTimer = damageTimerMax;
+
+	this->initAudio();
 }
 
 void Player::takeDamage(int damage)
@@ -66,6 +70,7 @@ void Player::Combat(RenderWindow& target)
 {
 	if (Mouse::isButtonPressed(Mouse::Left) && this->shootTimer >= this->shootTimerMax)
 	{
+		shurikenSfx.play();
 		this->PlayerPos = this->sprite.getPosition();
 		this->MousePos = Vector2f(Mouse::getPosition(target));
 		this->aimDir = MousePos - PlayerPos;
@@ -113,6 +118,13 @@ void Player::Update(float deltaTime)
 		this->shootTimer++;
 
 	}
+
+	if (this->healTimer < this->healTimerMax)
+	{
+		this->healTimer++;
+
+	}
+
 	if (this->damageTimer < this->damageTimerMax)
 	{
 		this->damageTimer++;
@@ -131,4 +143,10 @@ void Player::Draw(RenderWindow& target)
 	}
 	Combat(target);
 
+}
+
+void Player::initAudio()
+{
+	this->shurikenBuffer.loadFromFile("Sound/shuriken_sfx.wav");
+	this->shurikenSfx.setBuffer(shurikenBuffer);
 }

@@ -14,6 +14,7 @@ Enemy::Enemy(Texture* texture, Vector2f playerPos, float speed, Vector2f positio
 	this->hpMax = hpMax;
 	this->damage = damage;
 	this->damageMax = damageMax;
+	
 
 }
 

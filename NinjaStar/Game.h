@@ -3,12 +3,15 @@
 #include "Background.h"
 #include "Enemy.h"
 #include "Item.h"
+#include "Score.h"
 #include <vector>
+#include <string>
+
 
 class Game
 {
 private:
-	RenderWindow *window;
+	RenderWindow* window;
 	vector<Player> player;
 	vector<Enemy> enemies;
 	vector<Background> backgrounds;
@@ -21,6 +24,27 @@ private:
 	Texture logoTexture;
 	Texture mouseTexture;
 	Sprite mouseSprite;
+	Text coinText;
+	Texture coinIcon;
+	Texture scoreIcon;
+	Text scoreText;
+	Font font;
+	Sprite coin;
+	Sprite score;
+	size_t scores;
+	size_t coins;
+	size_t scoreMultiplier;
+
+	//soundsfx
+	SoundBuffer boomBuffer;
+	Sound boomSfx;
+	SoundBuffer shurikenBuffer;
+	Sound shurikenSfx;
+	
+	float multiplierTimerMax;
+	float multiplierTimer;
+	int multiplierAdderMax;
+	int multiplierAdder;
 
 	float spawnTimerMax;
 	float spawnTimer;
@@ -28,10 +52,44 @@ private:
 	RectangleShape hpBar[2];
 	CircleShape logo;
 
+	float healCooldown;
+	bool useHeal;
+	bool usingHeal;
+
+	float invisCooldown;
+	bool useInvis;
+	bool usingInvis;
+
+	Texture skillTexture[2];
+	Sprite skill[2];
+	Text heal;
+	Text invisible;
+	Texture menuTexture;
+	Texture buttonTexture[5];
+	Sprite menu;
+	Sprite button[5];
+
+	Texture gameOverTexture;
+	RectangleShape gameOver;
+
+	Text scoreOver;
+	Text highScore;
+
+	Texture popupWindowTexture;
+	Sprite popupWindow;
+
+	bool popupState = false;
+	bool scoreAdd = false;
+
 public:
-	Game(RenderWindow *window);
+	Game(RenderWindow* window);
+	void initUI();
+	void initAudio();
 	void UpdatePlayerUI(int index);
 	void Update(float deltaTime);
 	void Draw();
+	void GameOver();
+	void GameReset();
+
 };
 

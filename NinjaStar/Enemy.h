@@ -32,6 +32,11 @@ public:
 		return rand() % this->hpMax + this->hp;
 	}
 
+	inline int getHpMax()
+	{
+		return this->hpMax;
+	}
+
 	inline int getDamage()
 	{
 		return rand() % this->damageMax + this->damage;

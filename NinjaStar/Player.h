@@ -33,6 +33,12 @@ private:
 	SoundBuffer shurikenBuffer;
 	Sound shurikenSfx;
 
+	SoundBuffer jumpBuffer;
+	Sound jumpSfx;
+
+	SoundBuffer healBuffer;
+	Sound healSfx;
+
 public:
 	Player(Texture* texture, Texture* bulletTexture, Vector2u imageCount, float switchTime);
 	void takeDamage(int damage);
@@ -67,6 +73,7 @@ public:
 
 	inline bool useHeal()
 	{
+
 		if (Keyboard::isKeyPressed(Keyboard::Key::E))
 		{
 			return true;
@@ -79,6 +86,7 @@ public:
 	{
 		if (Keyboard::isKeyPressed(Keyboard::Key::Q))
 		{
+
 			return true;
 		}
 		return false;

@@ -10,12 +10,12 @@ Enemy::Enemy(Texture* texture, Vector2f playerPos, float speed, Vector2f positio
 	this->sprite.setPosition(this->position);
 	this->sprite.setScale(0.25, 0.25);
 
-	this->hp = hp;
-	this->hpMax = hpMax;
-	this->damage = damage;
-	this->damageMax = damageMax;
-	
 
+	this->hpMax = rand() % hpMax + hp;
+	this->hp = this->hpMax;
+	this->damageMax = rand() % damageMax + damage;
+	this->damage = this->damageMax;
+	
 }
 
 void Enemy::Update(float deltaTime)

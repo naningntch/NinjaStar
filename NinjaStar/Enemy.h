@@ -29,7 +29,7 @@ public:
 
 	inline int getHp()
 	{
-		return rand() % this->hpMax + this->hp;
+		return this->hp;
 	}
 
 	inline int getHpMax()

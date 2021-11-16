@@ -4,6 +4,7 @@
 #include "Enemy.h"
 #include "Item.h"
 #include "Score.h"
+#include "Menu.h"
 #include <vector>
 #include <string>
 
@@ -40,7 +41,18 @@ private:
 	Sound boomSfx;
 	SoundBuffer shurikenBuffer;
 	Sound shurikenSfx;
+	SoundBuffer coinBuffer;
+	Sound coinSfx;
+	SoundBuffer healBuffer;
+	Sound healSfx;
+	SoundBuffer invisibleBuffer;
+	Sound invisibleSfx;
+	SoundBuffer getdmgBuffer;
+	Sound getdmgSfx;
+
 	
+
+
 	float multiplierTimerMax;
 	float multiplierTimer;
 	int multiplierAdderMax;
@@ -80,9 +92,15 @@ private:
 
 	bool popupState = false;
 	bool scoreAdd = false;
+	bool menuState = false;
+
+	string playerName;
 
 public:
 	Game(RenderWindow* window);
+	inline void setPlayerName(string playerName) { this->playerName = playerName; }
+	inline bool	getCheckState() { return this->menuState; }
+	inline void	resetState() { this->menuState = false; }
 	void initUI();
 	void initAudio();
 	void UpdatePlayerUI(int index);

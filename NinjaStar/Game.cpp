@@ -30,17 +30,15 @@ Game::Game(RenderWindow* window)
 	this->popupWindowTexture.loadFromFile("Texture/menu/hamburger.png");
 
 	this->popupWindow.setTexture(this->popupWindowTexture);
-	this->popupWindow.setPosition(440, 250);
+	this->popupWindow.setPosition(440, 180);
 
-	this->scoreOver.setPosition(800, 295);
+	this->scoreOver.setPosition(720, 440);
 	this->scoreOver.setFont(this->font);
 	this->scoreOver.setCharacterSize(72);
 
-	this->highScore.setPosition(800, 380);
+	this->highScore.setPosition(720, 540);
 	this->highScore.setFont(this->font);
 	this->highScore.setCharacterSize(72);
-
-
 
 	for (size_t i = 0; i < 5; i++)
 	{
@@ -48,10 +46,10 @@ Game::Game(RenderWindow* window)
 		this->button[i].setTexture(this->buttonTexture[i]);
 	}
 
-	this->button[0].setPosition(530, 530);
-	this->button[1].setPosition(560, 400);
-	this->button[3].setPosition(800, 400);
-	this->button[4].setPosition(700, 530);
+	this->button[0].setPosition(530, 250);
+	this->button[1].setPosition(560, 330);
+	this->button[3].setPosition(800, 330);
+	this->button[4].setPosition(700, 250);
 
 	this->button[1].setOrigin(buttonTexture[1].getSize().x / 2, buttonTexture[1].getSize().y / 2);
 	this->button[3].setOrigin(buttonTexture[3].getSize().x / 2, buttonTexture[3].getSize().y / 2);
@@ -99,7 +97,7 @@ Game::Game(RenderWindow* window)
 	this->backgrounds.push_back(Background(&this->backgroundTexture[1], -80.f));
 	this->backgrounds.push_back(Background(&this->backgroundTexture[2], -120.f));
 
-	this->spawnTimerMax = 1.5;
+	this->spawnTimerMax = 100.f;
 	this->spawnTimer = spawnTimerMax;
 	for (size_t i = 0; i < 2; i++)
 	{
@@ -120,8 +118,25 @@ void Game::initAudio()
 {
 	this->boomBuffer.loadFromFile("Sound/boom_sfx.wav");
 	this->boomSfx.setBuffer(boomBuffer);
+
+
 	this->shurikenBuffer.loadFromFile("Sound/shuriken_sfx.wav");
 	this->shurikenSfx.setBuffer(shurikenBuffer);
+
+
+	this->coinBuffer.loadFromFile("Sound/coin_sfx.wav");
+	this->coinSfx.setBuffer(coinBuffer);
+
+
+	this->healBuffer.loadFromFile("Sound/heal_sfx.wav");
+	this->healSfx.setBuffer(healBuffer);
+
+	this->invisibleBuffer.loadFromFile("Sound/invisible_sfx.wav");
+	this->invisibleSfx.setBuffer(invisibleBuffer);
+
+	this->getdmgBuffer.loadFromFile("Sound/getdmg_sfx.wav");
+	this->getdmgSfx.setBuffer(getdmgBuffer);
+
 }
 
 void Game::initUI()
@@ -164,7 +179,6 @@ void Game::Update(float deltaTime)
 	//gamestart
 	if (this->playerAlive && !this->popupState)
 	{
-
 		for (Background& background : backgrounds)
 		{
 			background.Update(deltaTime);
@@ -172,7 +186,7 @@ void Game::Update(float deltaTime)
 
 		if (spawnTimer < spawnTimerMax)
 		{
-			spawnTimer += deltaTime;
+			spawnTimer++;
 		}
 
 		if (this->multiplierTimer > 0.f)
@@ -183,18 +197,15 @@ void Game::Update(float deltaTime)
 				this->multiplierTimer = 0.f;
 				this->multiplierAdder = 0;
 				this->scoreMultiplier = 1;
-
 			}
 		}
 
 		this->scoreMultiplier = this->multiplierAdder / this->multiplierAdderMax + 1;
 		if (spawnTimer >= spawnTimerMax)
 		{
-			Vector2f randPos = Vector2f(0, 0);
 
-			if (player.at(0).getPosition().x <= window->getSize().x / 2)
-				randPos = Vector2f(window->getSize().x, 0);
-			enemies.push_back(Enemy(&this->enemyTexture, player.at(0).getPosition(), 400.f, randPos, 1, 5, 1, 3));
+			Vector2f randPos = Vector2f(rand() % window->getSize().x, 0);
+			enemies.push_back(Enemy(&this->enemyTexture, player.at(0).getPosition(), 400.f, randPos, 1, 3, 1, 3));
 			spawnTimer = 0;
 
 		}
@@ -206,6 +217,7 @@ void Game::Update(float deltaTime)
 			//player use invisible
 			if (player.at(i).useInvisible() && !this->useInvis && coins >= 15)
 			{
+				invisibleSfx.play();
 				useInvis = true;
 				coins -= 15;
 			}
@@ -213,6 +225,7 @@ void Game::Update(float deltaTime)
 			//player use heal
 			if (player.at(i).useHeal() && !this->useHeal && coins >= 10)
 			{
+				healSfx.play();
 				useHeal = true;
 				coins -= 10;
 			}
@@ -230,6 +243,7 @@ void Game::Update(float deltaTime)
 				if (items.at(j).getGlobalBounds().intersects(player.at(i).getGlobalBounds()))
 				{
 					coins++;
+					coinSfx.play();
 					items.erase(items.begin() + j);
 					break;
 				}
@@ -249,12 +263,16 @@ void Game::Update(float deltaTime)
 				//meteor intersect player
 				if (this->enemies.at(l).getGlobalBounds().intersects(this->player.at(i).getGlobalBounds()) && !this->usingInvis)
 				{
+					getdmgSfx.play();
 					int damage = enemies.at(l).getDamage();
 					player.at(i).takeDamage(damage);
 					if (player.at(i).getHp() <= 0)
 					{
 						this->playerAlive = false;
-						scoreOver.setString(to_string(scores));
+						if (coins == 0)
+							coins = 1;
+						size_t lastScore = scores * coins;
+						scoreOver.setString(to_string(lastScore));
 					}
 					enemies.erase(enemies.begin() + l);
 					break;
@@ -264,8 +282,10 @@ void Game::Update(float deltaTime)
 
 			for (size_t k = 0; k < this->player.at(i).getBullets().size(); k++)
 			{
+				this->shurikenSfx.play();
+
 				//player shoot star
-				
+
 				this->player.at(i).getBullets().at(k).Update();
 				if (this->player.at(i).getBullets().at(k).getPosition().x > this->window->getSize().x || this->player.at(i).getBullets().at(k).getPosition().y < 0 || this->player.at(i).getBullets().at(k).getPosition().y > window->getSize().y)
 				{
@@ -292,6 +312,8 @@ void Game::Update(float deltaTime)
 							scores += enemies.at(j).getHpMax() * scoreMultiplier;
 							items.push_back(Item(&this->itemTexture, Vector2u(3, 2), 0.1f, this->enemies.at(j).getPosition()));
 							enemies.erase(enemies.begin() + j);
+							if (spawnTimerMax > 25.f)
+								spawnTimerMax -= 0.05f;
 						}
 						break;
 					}
@@ -315,7 +337,7 @@ void Game::Update(float deltaTime)
 			invisible.setString(to_string(int(invisCooldown)));
 			skill[1].setColor(Color(255, 255, 255, 100));
 
-			if (invisCooldown <= 1.f)
+			if (invisCooldown <= 15.f)
 			{
 				usingInvis = false;
 			}
@@ -352,9 +374,7 @@ void Game::Update(float deltaTime)
 				usingHeal = true;
 				for (size_t i = 0; i < player.size(); i++)
 				{
-
 					player.at(i).heal();
-
 				}
 			}
 
@@ -386,10 +406,9 @@ void Game::Update(float deltaTime)
 	if (button[1].getGlobalBounds().contains(Vector2f(Mouse::getPosition())))
 	{
 		button[1].setScale(0.38f, 0.38f);
-		if (Mouse::isButtonPressed(Mouse::Left))
+		if (Mouse::isButtonPressed(Mouse::Left) && popupState)
 		{
 			popupState = false;
-
 		}
 	}
 	else
@@ -400,6 +419,17 @@ void Game::Update(float deltaTime)
 	if (button[3].getGlobalBounds().contains(Vector2f(Mouse::getPosition())))
 	{
 		button[3].setScale(0.38f, 0.38f);
+		if (Mouse::isButtonPressed(Mouse::Left) && popupState)
+		{
+			menuState = true;
+			if (!scoreAdd)
+			{
+				Score score(this->window);
+				score.writeFile(this->playerName, scores * coins);
+
+				scoreAdd = true;
+			}
+		}
 	}
 	else
 	{
@@ -464,7 +494,7 @@ void Game::GameOver()
 	if (!scoreAdd)
 	{
 		Score score(this->window);
-		score.writeFile("nn", scores);
+		score.writeFile(this->playerName, scores * coins);
 
 		scoreAdd = true;
 		highScore.setString(to_string(score.highRead()));
@@ -488,6 +518,11 @@ void Game::GameOver()
 	if (button[4].getGlobalBounds().contains(Vector2f(Mouse::getPosition())))
 	{
 		button[4].setScale(0.38f, 0.38f);
+		if (Mouse::isButtonPressed(Mouse::Left))
+		{
+			menuState = true;
+		}
+
 
 	}
 	else
@@ -512,6 +547,7 @@ void Game::GameReset()
 	player.clear();
 	items.clear();
 	backgrounds.clear();
+	this->popupState = false;
 	this->playerAlive = true;
 
 	this->multiplierAdderMax = 10;
@@ -531,7 +567,7 @@ void Game::GameReset()
 	this->useInvis = false;
 	this->usingInvis = false;
 
-	this->spawnTimerMax = 1.5;
+	this->spawnTimerMax = 100.f;
 	this->spawnTimer = spawnTimerMax;
 	this->player.push_back(Player(&this->playerTexture, &this->bulletTexture, Vector2u(5, 2), 0.065f));
 	this->backgrounds.push_back(Background(&this->backgroundTexture[0], -60.f));

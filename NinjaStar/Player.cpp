@@ -39,9 +39,10 @@ void Player::takeDamage(int damage)
 
 void Player::Movement(float deltaTime)
 {
-
 	if (Keyboard::isKeyPressed(Keyboard::Key::W) && !this->jump)
 	{
+		this->jumpSfx.setBuffer(jumpBuffer);
+		jumpSfx.play();
 		accelerationValue = jumpF / mass;
 		this->jump = true;
 	}
@@ -70,6 +71,7 @@ void Player::Combat(RenderWindow& target)
 {
 	if (Mouse::isButtonPressed(Mouse::Left) && this->shootTimer >= this->shootTimerMax)
 	{
+		this->shurikenSfx.setBuffer(shurikenBuffer);
 		shurikenSfx.play();
 		this->PlayerPos = this->sprite.getPosition();
 		this->MousePos = Vector2f(Mouse::getPosition(target));
@@ -148,5 +150,9 @@ void Player::Draw(RenderWindow& target)
 void Player::initAudio()
 {
 	this->shurikenBuffer.loadFromFile("Sound/shuriken_sfx.wav");
-	this->shurikenSfx.setBuffer(shurikenBuffer);
+	
+
+	this->jumpBuffer.loadFromFile("Sound/jump_sfx.wav");
+	
+	
 }

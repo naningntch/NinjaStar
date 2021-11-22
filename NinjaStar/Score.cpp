@@ -16,6 +16,8 @@ Score::Score(RenderWindow* window)
 	this->mouseSprite.setScale(0.12f, 0.12f);
 	this->mouseSprite.setOrigin(Vector2f(this->mouseTexture.getSize().x / 2, this->mouseTexture.getSize().y / 2));
 	this->font.loadFromFile("Font/font.ttf");
+	this->buttonBuffer.loadFromFile("Sound/button_sfx.wav");
+	this->buttonSfx.setBuffer(buttonBuffer);
 }
 
 Score::~Score()
@@ -70,6 +72,7 @@ void Score::update()
 		this->homeButton.setScale(0.23f, 0.23f);
 		if (Mouse::isButtonPressed(Mouse::Left))
 		{
+			buttonSfx.play();
 			menuState = true;
 		}
 	}

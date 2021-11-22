@@ -25,6 +25,8 @@ private:
 	string playerName;
 	Text playerText;
 	Font font;
+	
+	
 
 	enum State
 	{
@@ -49,7 +51,7 @@ public:
 	inline void ResetName()
 	{
 		this->playerName.clear();
-		this->playerText.setString("Enter  Your  Name");
+		this->playerText.setString("Enter  Your  Name!");
 		this->playerText.setOrigin(this->playerText.getLocalBounds().width / 2, this->playerText.getLocalBounds().height / 2);
 	};
 	

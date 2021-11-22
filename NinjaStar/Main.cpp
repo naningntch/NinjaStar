@@ -12,6 +12,7 @@ int main()
 
 	while (window.isOpen())
 	{
+		
 		textEnter.clear();
 		deltaTime = clock.restart().asSeconds();
 		/*	if (deltaTime > 1.0f / 60.0f)

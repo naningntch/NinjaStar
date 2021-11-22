@@ -137,6 +137,9 @@ void Game::initAudio()
 	this->getdmgBuffer.loadFromFile("Sound/getdmg_sfx.wav");
 	this->getdmgSfx.setBuffer(getdmgBuffer);
 
+	this->buttonBuffer.loadFromFile("Sound/button_sfx.wav");
+	this->buttonSfx.setBuffer(buttonBuffer);
+
 }
 
 void Game::initUI()
@@ -394,6 +397,7 @@ void Game::Update(float deltaTime)
 		menu.setScale(0.18f, 0.18f);
 		if (Mouse::isButtonPressed(Mouse::Left))
 		{
+			buttonSfx.play();
 			popupState = true;
 
 		}
@@ -408,6 +412,7 @@ void Game::Update(float deltaTime)
 		button[1].setScale(0.38f, 0.38f);
 		if (Mouse::isButtonPressed(Mouse::Left) && popupState)
 		{
+			buttonSfx.play();
 			popupState = false;
 		}
 	}
@@ -421,6 +426,7 @@ void Game::Update(float deltaTime)
 		button[3].setScale(0.38f, 0.38f);
 		if (Mouse::isButtonPressed(Mouse::Left) && popupState)
 		{
+			buttonSfx.play();
 			menuState = true;
 			if (!scoreAdd)
 			{
@@ -506,6 +512,7 @@ void Game::GameOver()
 		button[0].setScale(0.38f, 0.38f);
 		if (Mouse::isButtonPressed(Mouse::Left))
 		{
+			buttonSfx.play();
 			GameReset();
 		}
 
@@ -520,6 +527,7 @@ void Game::GameOver()
 		button[4].setScale(0.38f, 0.38f);
 		if (Mouse::isButtonPressed(Mouse::Left))
 		{
+			buttonSfx.play();
 			menuState = true;
 		}
 

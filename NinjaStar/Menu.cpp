@@ -12,6 +12,7 @@ Menu::Menu(RenderWindow* window)
 			this->menu[i].setOrigin(menuTexture[i].getSize().x / 2, menuTexture[i].getSize().y / 2);
 		}
 	}
+
 	this->inputTexture.loadFromFile("Texture/menu/main/input.jpg");
 	this->input.setTexture(this->inputTexture);
 
@@ -24,8 +25,6 @@ Menu::Menu(RenderWindow* window)
 	this->playButton.setOrigin(menuTexture[1].getSize().x / 2, menuTexture[1].getSize().y / 2);
 	this->playButton.setPosition(445 + menuTexture[1].getSize().x / 2, 487 + menuTexture[1].getSize().y / 2);
 
-
-
 	this->menu[1].setPosition(692.5, 452.5);
 	this->menu[2].setPosition(692.5, 632.5);
 	this->mouseTexture.loadFromFile("Texture/menu/mouse.png");
@@ -37,7 +36,7 @@ Menu::Menu(RenderWindow* window)
 	this->buttonSfx.setBuffer(buttonBuffer);
 	this->font.loadFromFile("Font/font.ttf");
 
-	this->playerText.setString("Enter  Your  Name");
+	this->playerText.setString("Enter  Your  Name!");
 	this->playerText.setFont(this->font);
 	this->playerText.setCharacterSize(80);
 	this->playerText.setFillColor(Color::Black);
@@ -48,6 +47,7 @@ Menu::Menu(RenderWindow* window)
 	this->playerText.setOrigin(this->playerText.getLocalBounds().width / 2, this->playerText.getLocalBounds().height / 2);
 
 }
+
 
 void Menu::update()
 {
@@ -125,6 +125,7 @@ void Menu::updateInput(vector<Event> events)
 		this->homeButton.setScale(0.23f, 0.23f);
 		if (Mouse::isButtonPressed(Mouse::Left))
 		{
+			buttonSfx.play();
 			updateMenuState(MENU);
 		}
 	}
@@ -138,6 +139,7 @@ void Menu::updateInput(vector<Event> events)
 		this->playButton.setScale(1.1f, 1.1f);
 		if (Mouse::isButtonPressed(Mouse::Left))
 		{
+			buttonSfx.play();
 			updateMenuState(PLAY);
 		}
 	}
@@ -162,6 +164,8 @@ void Menu::updateInput(vector<Event> events)
 		}
 	}
 }
+
+
 
 void Menu::inputMenu()
 {

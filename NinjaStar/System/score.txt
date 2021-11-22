@@ -1,5 +1,5 @@
+bosss 29845
 dw 8062
 sd 4020
+naning 3690
 s 2415
-sd 2025
-df 918

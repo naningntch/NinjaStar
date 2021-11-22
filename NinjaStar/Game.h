@@ -49,7 +49,8 @@ private:
 	Sound invisibleSfx;
 	SoundBuffer getdmgBuffer;
 	Sound getdmgSfx;
-
+	SoundBuffer buttonBuffer;
+	Sound buttonSfx;
 	
 
 

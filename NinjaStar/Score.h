@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <string.h>
 #include <vector>
+#include <SFML/Audio.hpp>
 #include "SFML/Graphics.hpp"
 #include "SFML/Window.hpp"
 using namespace std;
@@ -32,6 +33,8 @@ private:
 	Text nameBoard[5];
 	Text scoreboard[5];
 	Text num[5];
+	SoundBuffer buttonBuffer;
+	Sound buttonSfx;
 
 public:
 	Score(RenderWindow* window);
